@@ -73,7 +73,7 @@
 
 
 
-            <Button Grid.Column="1" Height="20" Click="Button_Click" Grid.ColumnSpan="2" FontWeight="Bold">Capture</Button>
+            <Button Grid.Column="1" Height="20" Click="Button_Click" Grid.ColumnSpan="2" FontWeight="Bold" Name="btncapture">Capture</Button>
 
         </Grid>
 

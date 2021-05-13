@@ -15,6 +15,7 @@ using System.Drawing;
 using Color = System.Drawing.Color;
 using Mapcapture.extensions;
 using System.Windows.Controls;
+using System.Timers;
 
 namespace Mapcapture
 {
@@ -24,17 +25,18 @@ namespace Mapcapture
     /// 
 
 
-   
+
+
     public partial class MainWindow : Window
     {
 
-      
+        private  System.Timers.Timer aTimer;
         public LocationCollection TheLocation { get; set; }
         private List<csvdata> CSVData { get; set; }
         public MapPolyline polyline = new MapPolyline();
         public MapPolygon polygon = new MapPolygon();
         public LocationRect bounds = new LocationRect();
-
+        public bool isAutocapture;
 
 
         private IEnumerable<csvdata> LoadCSV(string filename)
@@ -70,9 +72,7 @@ namespace Mapcapture
         public MainWindow()
         {
 
-          
-
-            InitializeComponent();
+           InitializeComponent();
 
           //  myBrowser.Navigate("http://gameincol.com/googlemap.html");
 
@@ -80,13 +80,13 @@ namespace Mapcapture
 
             myMap.CredentialsProvider = new ApplicationIdCredentialsProvider(ConfigurationManager.AppSettings.Get("ApplicationIdCredentialsProvider"));
 
-
+             isAutocapture = bool.Parse(ConfigurationManager.AppSettings.Get("AutoCapture"));
             string filePath = ConfigurationManager.AppSettings.Get("LoadPathCSV") + "capture.csv";
             if (File.Exists(filePath)){
                 InitializeMap(filePath);
 
             }
-
+            
     
         }
 
@@ -97,6 +97,7 @@ namespace Mapcapture
             polyline.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LightSkyBlue);
             polyline.StrokeThickness = 3;
             polyline.Opacity = 1;
+
 
          
             CSVData = LoadCSV(filePath).ToList();
@@ -138,14 +139,19 @@ namespace Mapcapture
                 myMap.SetView(bounds);
                 resizewindow();
 
+                if (isAutocapture)
+                {
+                    btncapture.Content = "Auto Capturing Map";
+                    SetTimer();
+                }
 
-
-               // MessageBox.Show(myMap.ZoomLevel.ToString());
+               
 
             };
 
-
-
+            
+            
+            
 
         }
 
@@ -185,11 +191,17 @@ namespace Mapcapture
     
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            TakeAScreenShot();
+        }
+
+        public  void TakeAScreenShot() {
+
+
             polyline.Opacity = 0.0;
             progbar.Visibility = Visibility.Visible;
             string filePath;
 
-                   
+
 
             RenderTargetBitmap renderTargetBitmap =
             new RenderTargetBitmap(Convert.ToInt32(myMap.ActualWidth), Convert.ToInt32(myMap.ActualHeight), 96, 96, PixelFormats.Pbgra32);
@@ -199,10 +211,12 @@ namespace Mapcapture
             pngImage.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
 
 
-            if ((bool)chkenablersharpen.IsChecked) {
+            if ((bool)chkenablersharpen.IsChecked)
+            {
 
                 filePath = Path.GetTempFileName();
-            }else
+            }
+            else
             {
                 filePath = ConfigurationManager.AppSettings.Get("SaveImagePath") + ConfigurationManager.AppSettings.Get("SaveImageName") + "." + ConfigurationManager.AppSettings.Get("SaveImageExtention");
             }
@@ -213,24 +227,24 @@ namespace Mapcapture
                 fileStream.Close();
                 //File.Delete(filePath);
             }
-            
-            
-            
+
+
+
             if ((bool)chkenablersharpen.IsChecked)
             {
                 Bitmap bm = new Bitmap(filePath);
-               // bm = xsharpen(bm, (int)sharpenslider.Value);
+                // bm = xsharpen(bm, (int)sharpenslider.Value);
                 ApplySharpen(ref bm, 9);
                 //ApplySharpen(ref bm, 7);
-                
+
                 bm.Save(ConfigurationManager.AppSettings.Get("SaveImagePath") + ConfigurationManager.AppSettings.Get("SaveImageName") + "." + ConfigurationManager.AppSettings.Get("SaveImageExtention"));
-                
-             
+
+
             }
 
 
-
             this.Close();
+
         }
 
 
@@ -351,6 +365,35 @@ namespace Mapcapture
         {
            // sharpenslider.IsEnabled = false;
         }
+
+        private void SetTimer()
+        {
+            // Create a timer with a two second interval.
+            aTimer = new System.Timers.Timer(double.Parse(ConfigurationManager.AppSettings.Get("CaptureLoadTimer")));
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += OnTimedEvent;
+           // aTimer.AutoReset = true;
+            aTimer.Enabled = true;
+        }
+
+        public void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+
+            this.Dispatcher.Invoke(() =>
+            {
+                aTimer.Stop(); // doing house keeping
+                aTimer.Dispose();
+
+                TakeAScreenShot();
+            });
+        
+           
+
+        }
+
+
+ 
+      
     }
 
    

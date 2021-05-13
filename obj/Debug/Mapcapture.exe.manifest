@@ -4,7 +4,7 @@
   <description asmv2:iconFile="map.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Mapcapture" version="1.1.1.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Mapcapture" version="1.2.0.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="Mapcapture.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -55,14 +55,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Mapcapture.exe" size="354808">
-      <assemblyIdentity name="Mapcapture" version="1.1.1.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Mapcapture.exe" size="355832">
+      <assemblyIdentity name="Mapcapture" version="1.2.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>+7IUIbrFAp0gDgayBz+1GDhl+ug+Mckc0feGTFtllqM=</dsig:DigestValue>
+        <dsig:DigestValue>vSwCRBsZxDg80qiqX5RJigfqtFRso3ersB1mWL4MlKk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -135,13 +135,13 @@
       <dsig:DigestValue>5YQxksCkC5uu2lKZZKzUNVNtQyt0XVeVLmAlR90Jf4A=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Mapcapture.exe.config" size="1473">
+  <file name="Mapcapture.exe.config" size="1565">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>+gSoOZ3ZsJ0NkhLdxkOQTr2CU2IZ7F0IseGDY91caLU=</dsig:DigestValue>
+      <dsig:DigestValue>75YQRVe5N9qlLI3pJrmZ1d5o1seEZQPCRR6s9Ryx+Jg=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>
