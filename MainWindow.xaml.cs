@@ -16,6 +16,7 @@ using Color = System.Drawing.Color;
 using Mapcapture.extensions;
 using System.Windows.Controls;
 using System.Timers;
+using System.ComponentModel;
 
 namespace Mapcapture
 {
@@ -37,6 +38,7 @@ namespace Mapcapture
         public MapPolygon polygon = new MapPolygon();
         public LocationRect bounds = new LocationRect();
         public bool isAutocapture;
+        public BackgroundWorker worker;
 
 
         private IEnumerable<csvdata> LoadCSV(string filename)
@@ -74,9 +76,8 @@ namespace Mapcapture
 
            InitializeComponent();
 
-          //  myBrowser.Navigate("http://gameincol.com/googlemap.html");
-
-            //  myMap.MouseDoubleClick += new MouseButtonEventHandler(myMap_MouseDoubleClick);
+          //  myBrowser.Navigate("http://gameincol.com/googlemap.html")
+          //  myMap.MouseDoubleClick += new MouseButtonEventHandler(myMap_MouseDoubleClick);
 
             myMap.CredentialsProvider = new ApplicationIdCredentialsProvider(ConfigurationManager.AppSettings.Get("ApplicationIdCredentialsProvider"));
 
@@ -86,8 +87,7 @@ namespace Mapcapture
                 InitializeMap(filePath);
 
             }
-            
-    
+ 
         }
 
         public void InitializeMap(string filePath)
@@ -98,8 +98,6 @@ namespace Mapcapture
             polyline.StrokeThickness = 3;
             polyline.Opacity = 1;
 
-
-         
             CSVData = LoadCSV(filePath).ToList();
 
             foreach (var x in CSVData)
@@ -115,7 +113,6 @@ namespace Mapcapture
                   });
 
             }
-
 
             polyline.Locations = TheLocation;
            
@@ -141,7 +138,8 @@ namespace Mapcapture
 
                 if (isAutocapture)
                 {
-                    btncapture.Content = "Auto Capturing Map";
+                    
+                  
                     SetTimer();
                 }
 
@@ -191,14 +189,16 @@ namespace Mapcapture
     
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TakeAScreenShot();
+
+            SetTimer();
         }
 
         public  void TakeAScreenShot() {
 
+          
 
             polyline.Opacity = 0.0;
-            progbar.Visibility = Visibility.Visible;
+            
             string filePath;
 
 
@@ -242,9 +242,42 @@ namespace Mapcapture
 
             }
 
-
             this.Close();
+        }
 
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            long sum = 0;
+            long total = 3000;
+            for (long i = 1; i <= total; i++)
+            {
+                sum += i;
+                int percentage = Convert.ToInt32(((double)i / total) * 100);
+
+                Dispatcher.Invoke(new System.Action(() =>
+                {
+                    worker.ReportProgress(percentage);
+                    
+
+                }));
+            }
+            Dispatcher.Invoke(new System.Action(() =>
+            {
+                TakeAScreenShot();
+
+            }));
+           
+        }
+
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            MyProgressBar.Visibility = Visibility.Collapsed;
+           
+         
+        }
+        void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            MyProgressBar.Value = e.ProgressPercentage;
         }
 
 
@@ -368,7 +401,9 @@ namespace Mapcapture
 
         private void SetTimer()
         {
-            // Create a timer with a two second interval.
+            btncapture.Visibility = Visibility.Collapsed;
+            MyProgressBar.Visibility = Visibility.Visible;
+            // create a timer with interval
             aTimer = new System.Timers.Timer(double.Parse(ConfigurationManager.AppSettings.Get("CaptureLoadTimer")));
             // Hook up the Elapsed event for the timer. 
             aTimer.Elapsed += OnTimedEvent;
@@ -381,10 +416,20 @@ namespace Mapcapture
 
             this.Dispatcher.Invoke(() =>
             {
-                aTimer.Stop(); // doing house keeping
-                aTimer.Dispose();
 
-                TakeAScreenShot();
+                aTimer.Stop(); // doing all house keeping
+                aTimer.Dispose();
+                // TakeAScreenShot();
+
+                // purpose of this code is to give impression that it's loading and finishing - for visual queue purpose.
+                worker = new BackgroundWorker(); //Initializing the worker object
+                worker.ProgressChanged += Worker_ProgressChanged; //Binding Worker_ProgressChanged method
+                worker.DoWork += Worker_DoWork; //Binding Worker_DoWork method
+                worker.WorkerReportsProgress = true; //telling the worker that it supports reporting progress
+                worker.RunWorkerCompleted += Worker_RunWorkerCompleted; //Binding worker_RunWorkerCompleted method
+                worker.RunWorkerAsync(); //Executing the worker
+
+
             });
         
            

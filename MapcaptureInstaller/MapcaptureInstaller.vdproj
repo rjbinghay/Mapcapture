@@ -5226,7 +5226,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_8D8EF443DF044B4A80C4476E3042A99C"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]\\[ProductVersion]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -5264,7 +5264,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Mapcapture"
         "ProductCode" = "8:{C1118130-187C-4E30-8E37-09AD1070B012}"
-        "PackageCode" = "8:{D1D68972-4A4B-4688-B08D-6AD1F6BF4924}"
+        "PackageCode" = "8:{B72E5DEA-4303-453E-A090-23E3C6258D75}"
         "UpgradeCode" = "8:{C8103D2C-FA1F-4FCF-9305-03D9D370E93C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

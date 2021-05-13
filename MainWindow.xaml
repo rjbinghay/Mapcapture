@@ -34,13 +34,16 @@
                 <ColumnDefinition ></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-            <RepeatButton Grid.Column="0" Grid.Row="0" Height="20" Click="Button_zoomout" >Zoom Out</RepeatButton>
+            <RepeatButton Grid.Column="0" Grid.Row="0" Height="20" Click="Button_zoomout" >
+                <Bold>-</Bold></RepeatButton>
             <Button Grid.Column="1" Grid.Row="2" Height="20" Click="Button_Center"  Width="150">Center Map</Button>
-            <RepeatButton Grid.Column="2" Grid.Row="0" Height="20" Click="Button_zoomin" >Zoom In</RepeatButton>
+            <RepeatButton Grid.Column="2" Grid.Row="0" Height="20" Click="Button_zoomin" >
+                <Bold>+</Bold>
+            </RepeatButton>
 
         </Grid>
 
-        
+
 
 
 
@@ -48,32 +51,36 @@
 
             <Grid.ColumnDefinitions>
 
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="133*"></ColumnDefinition>
+                <ColumnDefinition Width="39*"/>
+                <ColumnDefinition Width="82*"/>
+                <ColumnDefinition Width="254*"></ColumnDefinition>
+                <ColumnDefinition Width="254*"/>
 
             </Grid.ColumnDefinitions>
 
-            <Grid  Grid.Row="0" Grid.Column="0"  >
-              
+            <Grid  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0.4,0"  >
+
                 <Grid.ColumnDefinitions>
-                    
+
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                   <!-- <ColumnDefinition Width="*"></ColumnDefinition>-->
+                    <!-- <ColumnDefinition Width="*"></ColumnDefinition>-->
 
                 </Grid.ColumnDefinitions>
 
                 <CheckBox Grid.Column="0" x:Name="chkenablersharpen" Content="Apply Sharpness" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="chkenablersharpen_Checked" Unchecked="chkenablersharpen_Unchecked" />
 
-               <!-- <Slider Grid.Column="1"  x:Name="sharpenslider" Minimum="3" Value="3" Cursor="Hand"  AutoToolTipPlacement="TopLeft"  FontSize="6" SmallChange="1" Width="auto" IsEnabled="False" />-->
+                <!-- <Slider Grid.Column="1"  x:Name="sharpenslider" Minimum="3" Value="3" Cursor="Hand"  AutoToolTipPlacement="TopLeft"  FontSize="6" SmallChange="1" Width="auto" IsEnabled="False" />-->
 
-                <ProgressBar x:Name="progbar" Grid.ColumnSpan="2" Visibility="Hidden" IsIndeterminate="True"></ProgressBar>
-                
+                <!--<ProgressBar x:Name="progbar" Grid.ColumnSpan="2" Visibility="Hidden" IsIndeterminate="True"></ProgressBar>-->
+
             </Grid>
 
 
 
-            <Button Grid.Column="1" Height="20" Click="Button_Click" Grid.ColumnSpan="2" FontWeight="Bold" Name="btncapture">Capture</Button>
+            <Button Grid.Column="2" Height="20" Click="Button_Click" Grid.ColumnSpan="3" FontWeight="Bold" Name="btncapture" >Capture</Button>
+
+            <ProgressBar Visibility="Collapsed" Name="MyProgressBar" Grid.ColumnSpan="2" Grid.Column="3" Height="20"  VerticalAlignment="Center" Width="100"/>
 
         </Grid>
 

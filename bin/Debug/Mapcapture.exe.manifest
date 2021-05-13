@@ -55,14 +55,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Mapcapture.exe" size="355832">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Mapcapture.exe" size="356856">
       <assemblyIdentity name="Mapcapture" version="1.2.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>vSwCRBsZxDg80qiqX5RJigfqtFRso3ersB1mWL4MlKk=</dsig:DigestValue>
+        <dsig:DigestValue>iQ82+9DAGsSZ9gZeS2mFq7axnq2QmeGX3WKmaihI24Q=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -141,7 +141,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>75YQRVe5N9qlLI3pJrmZ1d5o1seEZQPCRR6s9Ryx+Jg=</dsig:DigestValue>
+      <dsig:DigestValue>o7vRn2IzRszPNFjlH7zc0/fFt6NWDfWaRd/mvV5etUc=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>
