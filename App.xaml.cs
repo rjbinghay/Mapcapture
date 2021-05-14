@@ -17,7 +17,7 @@ namespace Mapcapture
         {
 
             
-            MainWindow MainWindow = new MainWindow();
+            MainWindow MainWindow = new MainWindow(e);
             MainWindow.Title = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name.ToString() + " " +  System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
             if (e.Args.Length > 0) {

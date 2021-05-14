@@ -24,22 +24,18 @@ namespace Mapcapture
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-
-
-
-
     public partial class MainWindow : Window
     {
 
         private  System.Timers.Timer aTimer;
-        public LocationCollection TheLocation { get; set; }
+        private LocationCollection TheLocation { get; set; }
         private List<csvdata> CSVData { get; set; }
-        public MapPolyline polyline = new MapPolyline();
-        public MapPolygon polygon = new MapPolygon();
-        public LocationRect bounds = new LocationRect();
-        public bool isAutocapture;
-        public BackgroundWorker worker;
-
+        private MapPolyline polyline = new MapPolyline();
+        private MapPolygon polygon = new MapPolygon();
+        private LocationRect bounds = new LocationRect();
+        private bool isAutocapture;
+        private BackgroundWorker worker;
+        private string _CaptureImage = ConfigurationManager.AppSettings.Get("SaveImageName");
 
         private IEnumerable<csvdata> LoadCSV(string filename)
         {
@@ -71,21 +67,26 @@ namespace Mapcapture
            
         }
 
-        public MainWindow()
+        public MainWindow(StartupEventArgs e)
         {
 
            InitializeComponent();
 
-          //  myBrowser.Navigate("http://gameincol.com/googlemap.html")
-          //  myMap.MouseDoubleClick += new MouseButtonEventHandler(myMap_MouseDoubleClick);
+
+            if (e.Args.Length > 0)
+            {
+                // MessageBox.Show("Now opening file: \n\n" + e.Args[0]);
+                _CaptureImage = e.Args[0];
+
+            }
+
 
             myMap.CredentialsProvider = new ApplicationIdCredentialsProvider(ConfigurationManager.AppSettings.Get("ApplicationIdCredentialsProvider"));
 
              isAutocapture = bool.Parse(ConfigurationManager.AppSettings.Get("AutoCapture"));
-            string filePath = ConfigurationManager.AppSettings.Get("LoadPathCSV") + "capture.csv";
+            string filePath = ConfigurationManager.AppSettings.Get("LoadPathCSV") + ConfigurationManager.AppSettings.Get("LoadNameCSV") + ".csv";
             if (File.Exists(filePath)){
                 InitializeMap(filePath);
-
             }
  
         }
@@ -138,18 +139,12 @@ namespace Mapcapture
 
                 if (isAutocapture)
                 {
-                    
-                  
-                    SetTimer();
+                  SetTimer();
                 }
 
                
 
             };
-
-            
-            
-            
 
         }
 
@@ -195,12 +190,9 @@ namespace Mapcapture
 
         public  void TakeAScreenShot() {
 
-          
 
-            polyline.Opacity = 0.0;
-            
             string filePath;
-
+            polyline.Opacity = 0.0;
 
 
             RenderTargetBitmap renderTargetBitmap =
@@ -218,7 +210,7 @@ namespace Mapcapture
             }
             else
             {
-                filePath = ConfigurationManager.AppSettings.Get("SaveImagePath") + ConfigurationManager.AppSettings.Get("SaveImageName") + "." + ConfigurationManager.AppSettings.Get("SaveImageExtention");
+                filePath = ConfigurationManager.AppSettings.Get("SaveImagePath") + _CaptureImage + "." + ConfigurationManager.AppSettings.Get("SaveImageExtention");
             }
 
             using (Stream fileStream = File.Create(filePath))
@@ -237,7 +229,7 @@ namespace Mapcapture
                 ApplySharpen(ref bm, 9);
                 //ApplySharpen(ref bm, 7);
 
-                bm.Save(ConfigurationManager.AppSettings.Get("SaveImagePath") + ConfigurationManager.AppSettings.Get("SaveImageName") + "." + ConfigurationManager.AppSettings.Get("SaveImageExtention"));
+                bm.Save(ConfigurationManager.AppSettings.Get("SaveImagePath") + _CaptureImage + "." + ConfigurationManager.AppSettings.Get("SaveImageExtention"));
 
 
             }
@@ -257,7 +249,6 @@ namespace Mapcapture
                 Dispatcher.Invoke(new System.Action(() =>
                 {
                     worker.ReportProgress(percentage);
-                    
 
                 }));
             }
@@ -419,7 +410,7 @@ namespace Mapcapture
 
                 aTimer.Stop(); // doing all house keeping
                 aTimer.Dispose();
-                // TakeAScreenShot();
+         
 
                 // purpose of this code is to give impression that it's loading and finishing - for visual queue purpose.
                 worker = new BackgroundWorker(); //Initializing the worker object
